@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="grid-content max-row-height" @click="editToDo()">{{data.summary}}</div>
+    <div class="grid-content max-row-height" @click="editToDo()">
+      <div class="summary">{{data.summary}}</div>
+    </div>
   </div>
 </template>
 
@@ -20,4 +22,10 @@ export default {
 </script>
 
 <style>
+.summary {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0 10px;
+}
 </style>

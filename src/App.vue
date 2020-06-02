@@ -2,12 +2,24 @@
   <div>
     <el-container>
       <el-header>
-        <div style="font-size: 20px;">您好，XXX！</div>
-        <el-menu active-text-color="#E6A23C" mode="horizontal">
-          <el-menu-item index="1">
+        <div style="font-size: 20px;">
+          <div style="display: flow-root;">
+            <span style="float: left; padding-left: 10px; color: white;">您好，XXX！</span>
+            <span style="float: right; padding-right: 10px;">
+              <i class="el-icon-search"></i>
+            </span>
+          </div>
+        </div>
+        <el-menu
+          default-active="1"
+          active-text-color="#409EFF"
+          mode="horizontal"
+          @select="handleMenuSelect"
+        >
+          <el-menu-item index="1" :class="{selectMenuFontWeight: this.selectMenuIndex == 1}">
             <router-link to="/">Home</router-link>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="2" :class="{selectMenuFontWeight: this.selectMenuIndex == 2}">
             <router-link to="/toDo">Add To-Do</router-link>
           </el-menu-item>
         </el-menu>
@@ -21,7 +33,21 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      selectMenuIndex: ""
+    };
+  },
+  methods: {
+    handleMenuSelect(key) {
+      this.selectMenuIndex = key;
+    }
+  },
+  created() {
+    this.selectMenuIndex = 1;
+  }
+};
 </script>
 
 <style>
@@ -74,5 +100,11 @@ li a {
 }
 .el-menu--horizontal > .el-menu-item {
   border-bottom: none !important;
+}
+.selectMenuFontWeight {
+  font-weight: bold;
+}
+.el-icon-search {
+  color: white;
 }
 </style>
