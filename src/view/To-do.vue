@@ -8,6 +8,7 @@
 
 <script>
 import ToDoDetail from "../components/To-do-detail";
+import axios from "axios";
 
 export default {
   components: {
@@ -22,10 +23,19 @@ export default {
       this.$store.commit("toDoAdd", toDo);
       // 编程式路由，直接跳回到home页
       this.$router.push("/");
+      // 最后异步地将数据先插入DB
+      this.insertToDoIntoDB(toDo);
     },
     modifyToDo_Parent(modifiedToDo) {
       this.$store.commit("toDoModify", modifiedToDo);
       this.$router.push("/");
+      this.updateToDoIntoDB(modifiedToDo);
+    },
+    async insertToDoIntoDB(toDo) {
+      await axios.post("/api/toDoService/toDo", toDo);
+    },
+    async updateToDoIntoDB(modifiedToDo) {
+      await axios.post("/api/toDoService/toDo", modifiedToDo);
     }
   }
 };
@@ -46,7 +56,7 @@ export default {
 .el-date-editor.el-input__inner {
   width: 100% !important;
 }
-.el-button {
+.el-button-width-100 {
   width: 100% !important;
 }
 </style>

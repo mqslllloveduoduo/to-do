@@ -1,6 +1,15 @@
 <template>
   <div>
-    <h2>To-Do list...</h2>
+    <h2 v-if="!noToDo && !backendServiceFailed && !loading">To-Do list...</h2>
+    <h2 v-if="!noToDo && backendServiceFailed && !loading">数据加载失败...</h2>
+    <div v-if="noToDo">
+      <div>还没有待办事项？赶快来添加吧！</div>
+      <div>
+        <el-row>
+          <el-button type="primary" icon="el-icon-edit" circle class="el-button-size-30"></el-button>
+        </el-row>
+      </div>
+    </div>
     <el-row>
       <el-col class="todo-item" :span="24" v-for="(todo, index) in toDos" :key="index">
         <ToDoItem :data="todo"></ToDoItem>
@@ -39,17 +48,32 @@ export default {
   },
   data() {
     return {
-      toDos: []
+      toDos: [],
+      noToDo: true,
+      backendServiceFailed: false,
+      loading: true
     };
   },
   async created() {
-    if (this.toDoList && this.toDoList.length > 0) {
-      this.toDos = this.toDoList;
-    } else {
-      let result = await axios.get("/api/toDos");
-      this.toDos = result.data.data;
+    try {
+      console.log("to get data from remote service...");
+      let result = await axios.get("/api/toDoService/toDos");
+      this.toDos = result.data;
       // 触发了toDoList的set方法
-      this.toDoList = this.toDos;
+      this.toDoList = this.toDos || [];
+      if (this.toDoList.length > 0) {
+        this.noToDo = false;
+      }
+      this.loading = false;
+    } catch (e) {
+      console.log("back-end service request failed...");
+      console.log(e);
+      this.toDos = this.toDoList;
+      if (this.toDos.length == 0) {
+        this.backendServiceFailed = true;
+        this.noToDo = false;
+      }
+      this.loading = false;
     }
   }
 };
@@ -69,5 +93,8 @@ export default {
   margin: 10px 0 10px 0;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+}
+.el-button-size-30 {
+  font-size: 30px !important;
 }
 </style>

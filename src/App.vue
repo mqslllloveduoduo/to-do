@@ -10,16 +10,27 @@
             </span>
           </div>
         </div>
-        <el-menu
-          default-active="1"
+        <!-- <el-menu
+          :default-active="activeMenu($route.path)"
           active-text-color="#409EFF"
           mode="horizontal"
           @select="handleMenuSelect"
+        >-->
+        <el-menu
+          :default-active="activeMenu($route.path)"
+          active-text-color="#409EFF"
+          mode="horizontal"
         >
-          <el-menu-item index="1" :class="{selectMenuFontWeight: this.selectMenuIndex == 1}">
+          <el-menu-item
+            index="1"
+            :class="{selectMenuFontWeight: this.activeMenu($route.path) == '1'}"
+          >
             <router-link to="/">Home</router-link>
           </el-menu-item>
-          <el-menu-item index="2" :class="{selectMenuFontWeight: this.selectMenuIndex == 2}">
+          <el-menu-item
+            index="2"
+            :class="{selectMenuFontWeight: this.activeMenu($route.path) == '2'}"
+          >
             <router-link to="/toDo">Add To-Do</router-link>
           </el-menu-item>
         </el-menu>
@@ -36,16 +47,24 @@
 export default {
   data() {
     return {
-      selectMenuIndex: ""
+      // selectMenuIndex: ""
     };
   },
   methods: {
-    handleMenuSelect(key) {
-      this.selectMenuIndex = key;
+    // handleMenuSelect(key) {
+    //   this.selectMenuIndex = key;
+    // },
+    activeMenu(path) {
+      if (path.indexOf("/toDo") < 0) {
+        return "1";
+      }
+      if (path.indexOf("/toDo") == 0) {
+        return "2";
+      }
     }
   },
   created() {
-    this.selectMenuIndex = 1;
+    // this.selectMenuIndex = 1;
   }
 };
 </script>

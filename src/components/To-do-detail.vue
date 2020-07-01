@@ -34,11 +34,16 @@
         <el-option v-for="value in statusOptions" :key="value" :label="value" :value="value"></el-option>
       </el-select>
     </div>
-    <el-button v-if="!this.isModifyView" type="primary" class="el-button" @click="addToDo()">Add</el-button>
+    <el-button
+      v-if="!this.isModifyView"
+      type="primary"
+      class="el-button-width-100"
+      @click="addToDo()"
+    >Add</el-button>
     <el-button
       v-if="this.isModifyView"
       type="primary"
-      class="el-button"
+      class="el-button-width-100"
       @click="modifyToDo()"
     >Modify</el-button>
   </div>
